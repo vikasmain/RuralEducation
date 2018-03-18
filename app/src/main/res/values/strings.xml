@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">RuralEducation</string>
+    <string name="facebook_app_id">434175800336790</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="item_1">Home</string>
+    <string name="item_2">SELL</string>
+    <string name="item_3">Account</string>
+    <string name="navigation_drawer_open">drawer open</string>
+    <string name="navigation_drawer_close">drawer closed</string>
+    <string name="lorem_ipsum">lorenipsu</string>
+    <string name="appbar_spring_behavior">app_bar_spring_behaviour</string>
+    <string name="title_activity_post_second">Choose a Category For Product</string>
+    <string name="Rs">\u20B9</string>
+    <string name="description_zoom_touch_close">Expanded image (touch to close)</string>
+    <string name="description_image_1">Image 1</string>
+    <string name="chat">Your Chats with Admin</string>
+</resources>

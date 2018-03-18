@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.journaldev.collapsingtoolbarlayout.ScrollingActivity">
+
+    <item
+        android:id="@+id/action_info"
+        android:orderInCategory="200"
+        android:title="info"
+        app:showAsAction="always|collapseActionView"
+        android:icon="@drawable/chat"/>
+
+</menu>

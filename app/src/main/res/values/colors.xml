@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="theme_primary">#00BCD4</color>
+
+    <color name="theme_primary_dark">#0097A7</color>
+
+    <color name="theme_primary_dark2">#006064</color>
+
+    <color name="theme_accent">#FFEB3B</color>
+
+    <color name="background_card">#fff</color>
+
+    <color name="background_snackbar">#323232</color>
+
+    <color name="text_black_87">#de000000</color>
+
+    <color name="text_white_87">#deFFFFFF</color>
+
+
+    -<array name="note_neutral_colors">
+
+    <item>#9E9E9E</item>
+
+    <item>#455A64</item>
+
+    <item>#607D8B</item>
+
+</array>
+
+
+    -<array name="note_accent_colors">
+
+    <item>#039BE5</item>
+
+    <item>#3D51B3</item>
+
+    <item>#689f38</item>
+
+    <item>#FD7044</item>
+
+</array>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="primary_light">#BBDEFB</color>
+
+    <color name="accent">#03A9F4</color>
+    <color name="send_otp_blue">#156BB3</color>
+    <color name="send_otp_blue_dark">#06599e</color>
+    <color name="sendotp_grey">#636363</color>
+    <color name="sendotp_medium_grey">#B0B0B0</color>
+    <color name="sendotp_light_grey">#D9D9D9</color>
+    <color name="primary_text">#212121</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+
+    <color name="windowBackground">#FFFFFF</color>
+
+    <color name="navigationBarColor">#000000</color>
+
+
+    <color name="bg_view_sms">#ffd423</color>
+
+    <color name="bg_view_otp">#fc6d38</color>
+    <color name="secondary_text">#757575</color>
+    <color name="ki">#1E79F2</color>
+
+    <color name="icons">#757575</color>
+
+    <color name="colorPrimarym">#047445</color>
+    <color name="colorPrimaryDarkm">#07A764</color>
+    <color name="colorAccentm">#0ABF73</color>
+    <color name="whitem">#ffffff</color>
+    <color name="blackm">#2B2C2C</color>
+    <color name="groundm">#E4F5EA</color>
+    <color name="greycolorm">#C2C2C2</color>
+
+    <color name="divider">#bdbdbd</color>
+    <!-- Screens background color-->
+    <color name="bg_screen1">#f64c73</color>
+    <color name="bg_screen2">#20d2bb</color>
+    <color name="bg_screen3">#3395ff</color>
+    <color name="bg_screen4">#c873f4</color>
+    <color name="white">#c873f4</color>
+
+    <color name="white_trans">#2278d4</color>
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen1">#d1395c</color>
+    <color name="dot_dark_screen2">#14a895</color>
+    <color name="dot_dark_screen3">#2278d4</color>
+    <color name="dot_dark_screen4">#a854d4</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen1">#f98da5</color>
+    <color name="dot_light_screen2">#8cf9eb</color>
+    <color name="dot_light_screen3">#93c6fd</color>
+    <color name="dot_light_screen4">#e4b5fc</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen3</item>
+        <item>@color/dot_light_screen4</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen2</item>
+        <item>@color/dot_dark_screen3</item>
+        <item>@color/dot_dark_screen4</item>
+    </array>
+</resources>
