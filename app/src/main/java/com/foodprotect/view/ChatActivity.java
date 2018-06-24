@@ -7,11 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -127,7 +125,7 @@ String check=mauth.getCurrentUser().getDisplayName();
 if(check.equals(pot))
 {
     Toast.makeText(this, "u are user", Toast.LENGTH_SHORT).show();
-            ListView listOfMessage = (ListView) findViewById(R.id.list_of_message);
+            ListView listOfMessage = (ListView) findViewById(R.id.list_of_message2);
             adapter = new FirebaseListAdapter<ChatMessage>(
                     this,
                     ChatMessage.class,
@@ -208,24 +206,5 @@ if(check.equals(pot))
 
 }
     }
-    public static class ListUtils {
-        public static void setDynamicHeight(ListView mListView) {
-            ListAdapter mListAdapter = mListView.getAdapter();
-            if (mListAdapter == null) {
-                // when adapter is null
-                return;
-            }
-            int height = 0;
-            int desiredWidth = View.MeasureSpec.makeMeasureSpec(mListView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-            for (int i = 0; i < mListAdapter.getCount(); i++) {
-                View listItem = mListAdapter.getView(i, null, mListView);
-                listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-                height += listItem.getMeasuredHeight();
-            }
-            ViewGroup.LayoutParams params = mListView.getLayoutParams();
-            params.height = height + (mListView.getDividerHeight() * (mListAdapter.getCount() - 1));
-            mListView.setLayoutParams(params);
-            mListView.requestLayout();
-        }
-    }
+
 }
