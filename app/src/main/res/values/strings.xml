@@ -16,4 +16,7 @@
     <string name="description_zoom_touch_close">Expanded image (touch to close)</string>
     <string name="description_image_1">Image 1</string>
     <string name="chat">Your Chats with Admin</string>
+    <string name="google_maps_key">AIzaSyB9G43vTdhotYk9Z9fUZDu-l4RXbBSMnCQ</string>
+    <string name="str_atv_places">Enter Villages name</string>
+    <string name="check">Product Sold</string>
 </resources>

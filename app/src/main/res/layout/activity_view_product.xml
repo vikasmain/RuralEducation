@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:text="TextView 3"
                 android:layout_margin="10dp"
-android:textColor="@android:color/holo_green_dark"
+                android:textColor="@android:color/holo_green_dark"
                 android:textSize="20sp"
                 />
             <TextView
@@ -153,7 +153,23 @@ android:textColor="@android:color/holo_green_dark"
                 android:textColor="@android:color/holo_red_dark"
                 />
 
-
+            <CheckBox
+                android:id="@+id/chkIos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/check"
+                android:layout_margin="10dp"
+                 />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete This Product"
+                android:textColor="#ffffff"
+                android:id="@+id/delete"
+                android:visibility="gone"
+                android:background="@drawable/rounded_selected_button"
+                />
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
@@ -174,14 +190,18 @@ android:textColor="@android:color/holo_green_dark"
         android:layout_height="match_parent"
         android:visibility="invisible"
         android:contentDescription="@string/description_zoom_touch_close" />
-<ImageView
-    android:id="@+id/fab2"
-        android:layout_width="50dp"
-        android:layout_height="60dp"
-        android:layout_margin="10dp"
-        android:src="@drawable/chat"
-        android:layout_marginTop="10dp"
-    android:background="@android:color/white"
-        android:layout_gravity="bottom|end"
-        />
+
+    <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="CheckOut"
+    android:textStyle="bold"
+    android:textAllCaps="false"
+    android:id="@+id/check"
+    android:layout_gravity="bottom"
+    android:visibility="gone"
+    android:textColor="@android:color/white"
+    android:background="@android:color/holo_blue_light"/>
+
+
 </FrameLayout>

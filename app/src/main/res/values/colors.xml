@@ -110,4 +110,6 @@
         <item>@color/dot_dark_screen3</item>
         <item>@color/dot_dark_screen4</item>
     </array>
+<color name="toast">#ffffff</color>
+    <color name="black">#000000</color>
 </resources>

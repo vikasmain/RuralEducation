@@ -10,6 +10,15 @@ public class product {
     private String price;
     private String image;
     private String uid;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getDesc() {
         return desc;

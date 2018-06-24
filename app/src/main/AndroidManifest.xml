@@ -6,7 +6,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:name=".OfflineCapability"
         android:allowBackup="true"
@@ -35,13 +38,22 @@
         <activity
             android:name=".view.SetupAccount"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.PostFirstActivity" />
-
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
-        <activity android:name=".view.PostThirdActivity" />
+        <activity
+            android:name=".view.PostFirstActivity"
+            android:parentActivityName=".view.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.MainActivity" />
+        </activity>
+        <activity android:name=".view.Checkiit" />
+        <activity
+            android:name=".view.PostThirdActivity"
+            android:parentActivityName=".view.PostSecondActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.PostSecondActivity" />
+        </activity>
         <activity
             android:name=".view.ViewProduct"
             android:theme="@style/AppTheme.NoActionBar">
@@ -49,12 +61,33 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.MainActivity" />
         </activity>
+        <activity android:name="com.paytm.pgsdk.PaytmPGActivity"
+            android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation|keyboard"/>
+
+
         <activity
             android:name=".view.PostSecondActivity"
             android:label="@string/title_activity_post_second"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.ChatActivity"
-            android:label="@string/chat"
+            android:parentActivityName=".view.PostFirstActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.PostFirstActivity" />
+        </activity>
+        <activity
+            android:name=".view.ChatActivity"
+            android:label="@string/chat"></activity>
+        <activity android:name=".view.Checkout" />
+
+        <meta-data
+            tools:replace="android:value"
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity android:name=".view.FinalCheckout"
             ></activity>
     </application>
 

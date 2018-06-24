@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.foodprotect.view.Checkout"
+    tools:showIn="@layout/checkout">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shadowed_edittext2"
+            android:id="@+id/l1">
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/fragemn1"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment">
+            </fragment>
+        </LinearLayout>
+
+        <!--<AutoCompleteTextView-->
+        <!--android:id="@+id/e1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="10"-->
+        <!--android:padding="10dp"-->
+        <!--android:hint="Enter Village Name"-->
+        <!--/>-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/l1"
+            android:layout_marginTop="20dp"
+            android:padding="5dp"
+            android:textColor="@android:color/holo_red_light"
+            android:gravity="center"
+            android:text="Village Choosen By Yourself"
+            android:id="@+id/tey"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/e3"
+            android:textStyle="italic|bold"
+            android:layout_marginTop="20dp"
+            android:padding="5dp"
+            android:textColor="@android:color/holo_orange_dark"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tey"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/e2"
+            android:textStyle="italic|bold"
+            android:layout_marginTop="20dp"
+            android:padding="5dp"
+            android:textColor="@android:color/holo_orange_dark"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/e3"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_selected_button"
+            android:text="List of Villages"
+            android:id="@+id/button1"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_below="@+id/e2"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:id="@+id/button2"
+            android:background="@drawable/rounded_selected_button"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

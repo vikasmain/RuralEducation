@@ -20,7 +20,7 @@
         android:layout_below="@+id/post_second"
         android:layout_margin="10dp"
         android:inputType="number"
-        android:maxLength="4"
+        android:maxLength="2"
 
         android:backgroundTint="@android:color/darker_gray"
         android:hint="Enter Price for Product"/>

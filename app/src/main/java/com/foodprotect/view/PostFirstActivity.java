@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,12 +29,15 @@ private DatabaseReference databaseReference;
     DatabaseReference users,mDatabase;
     Button b1,b2;
     Uri imageuri=null;
+    boolean doubleBackToExitPressedOnce = false;
+
     TextView lo;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_first);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mauth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Products");
         users= FirebaseDatabase.getInstance().getReference().child("Users");
@@ -83,9 +87,30 @@ private DatabaseReference databaseReference;
 
     @Override
     public void onBackPressed() {
-
+        if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
+            moveTaskToBack(true); //activity.moveTaskToBack(true);
+//it will behave as Home Button is pressed
 
+
+
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast toast=Toast.makeText(this, "Press Back again to exit", Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        view.setBackgroundColor(getResources().getColor(R.color.toast));
+        TextView text = (TextView) view.findViewById(android.R.id.message);
+        text.setTextColor(getResources().getColor(R.color.black));
+/*Here you can do anything with above textview like text.setTextColor(Color.parseColor("#000000"));*/
+        toast.show();
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
 }

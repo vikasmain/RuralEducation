@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -12,16 +14,18 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -40,8 +44,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import java.util.Locale;
-
 public class ViewProduct extends AppCompatActivity
 {
     private static final String EXTRA_IMAGE ="com.foodprotect" ;
@@ -56,20 +58,21 @@ public class ViewProduct extends AppCompatActivity
     String mpost_key,post_title,image,
             post_desc,post_uid,post_price
             ,post_category;
-    ImageView floatingActionButton;
     Double lon1,lat1,lon2,lat2;
     private Menu menu;
     ProgressBar progressBar;
     Double dis;
+    CheckBox checkBox;
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton fab;
+    Button button,delete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_product);
         final Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        floatingActionButton=(ImageView)findViewById(R.id.fab2);
+
 
         progressBar=(ProgressBar)findViewById(R.id.progressbar);
         t1=(TextView) findViewById(R.id.t1);
@@ -78,7 +81,6 @@ public class ViewProduct extends AppCompatActivity
         t4=(TextView)findViewById(R.id.t4);
         t5=(TextView)findViewById(R.id.t5);
         t6=(TextView)findViewById(R.id.t6);
-
         t7=(TextView)findViewById(R.id.t7);
 
         t10=(TextView)findViewById(R.id.t15);
@@ -100,7 +102,7 @@ if(!mpost_key.isEmpty())
 
     databaseReference.child(mpost_key).addValueEventListener(new ValueEventListener() {
         @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
+        public void onDataChange(final DataSnapshot dataSnapshot) {
             final product product=dataSnapshot.getValue(product.class);
 
 
@@ -109,24 +111,119 @@ if(!mpost_key.isEmpty())
 //            post_price = (String) dataSnapshot.child("price").getValue();
 //
 //            image = (String) dataSnapshot.child("image").getValue();
+            String sta = (String) dataSnapshot.child("status").getValue();
 
             post_uid = (String) dataSnapshot.child("uid").getValue();
+            if(!TextUtils.isEmpty(post_uid)&&!TextUtils.isEmpty(sta)) {
 
-            Glide.with(getApplicationContext()).load(product.getImage())
-                    .into(imageView);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    zoomImageFromThumb(imageView,product.getImage());
+
+                if (!(post_uid.equals(mauth.getCurrentUser().getUid()))&&sta.equals("n")) {
+                    button = (Button) findViewById(R.id.check);
+                    button.setVisibility(View.VISIBLE);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(ViewProduct.this, Checkout.class);
+                            startActivity(intent);
+                        }
+                    });
                 }
-            });
+            }
+            else {
+            }
+            if(!TextUtils.isEmpty(post_uid)&&!TextUtils.isEmpty(mauth.getCurrentUser().getUid())) {
+                if ((post_uid.equals(mauth.getCurrentUser().getUid()))) {
+                    delete = (Button) findViewById(R.id.delete);
+                    delete.setVisibility(View.VISIBLE);
+                    checkBox=(CheckBox)findViewById(R.id.chkIos);
+                     checkBox.setVisibility(View.VISIBLE);
 
-            mShortAnimationDuration = getResources().getInteger(
-                    android.R.integer.config_shortAnimTime);
-            t3.setText(getResources().getString(R.string.Rs) + " " + product.getPrice());
-            t4.setText("Product Title: "+product.getTitle());
-            t5.setText("Product Category: "+product.getCategory());
-            t10.setText("Description: "+product.getDesc());
+                    String status = (String) dataSnapshot.child("status").getValue();
+                    if(status.equals("n"))
+                        checkBox.setChecked(false);
+
+                    else
+                    {
+                       checkBox.setChecked(true);
+                    }
+                    checkBox.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(checkBox.isChecked())
+                            {
+                                databaseReference.child(mpost_key).child("status").setValue("A");
+                            }
+                            else if(!checkBox.isChecked()){
+                                databaseReference.child(mpost_key).child("status").setValue("n");
+                            }
+                        }
+                    });
+//
+//                    if (status.equals("n")) {
+//                        soldunsold.setText("Product Available For Sell");
+//                        soldunsold.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                Toast.makeText(ViewProduct.this, "jddd", Toast.LENGTH_SHORT).show();
+//
+//                            }
+//                        });
+//                    } else
+//                        soldunsold.setText("Product Sold");
+
+                    delete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ViewProduct.this);
+                            alertDialogBuilder.setMessage("Are you sure?");
+                                    alertDialogBuilder.setPositiveButton("Yes",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    databaseReference.child(mpost_key).removeValue();
+                                                    Intent intent = new Intent(ViewProduct.this, MainActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            });
+
+                            alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            });
+
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
+
+                        }
+                    });
+
+
+                }
+            }
+            String im = (String) dataSnapshot.child("image").getValue();
+
+            if(!TextUtils.isEmpty(im)&&product.getTitle()!=null
+                    &&product.getCategory()!=null&&product.getDesc()!=null) {
+                Glide.with(getApplicationContext()).load(product.getImage())
+                        .into(imageView);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        zoomImageFromThumb(imageView, product.getImage());
+                    }
+                });
+
+                mShortAnimationDuration = getResources().getInteger(
+                        android.R.integer.config_shortAnimTime);
+                t3.setText(getResources().getString(R.string.Rs) + " " + product.getPrice());
+                t4.setText("Product Title: " + product.getTitle());
+                t5.setText("Product Category: " + product.getCategory());
+                t10.setText("Description: " + product.getDesc());
+            }
+            else
+                Toast.makeText(ViewProduct.this, "Product Deleted", Toast.LENGTH_SHORT).show();
             if (post_uid != null) {
 
 
@@ -138,7 +235,7 @@ if(!mpost_key.isEmpty())
                         name = (String) dataSnapshot2.child("Name").getValue();
 
                         final PostUsers postUsers=dataSnapshot2.getValue(PostUsers.class);
-                            t2.setText(postUsers.getName());
+                            t2.setText("Product Posted by:- "+postUsers.getName());
                             Picasso.with(getApplicationContext()).load(postUsers.getImage())
                                     .transform(new CircleTransform()).into(fabbutton);
                             lon1=dataSnapshot2.child("longitude").getValue(Double.class);
@@ -149,16 +246,7 @@ if(!mpost_key.isEmpty())
                         putDouble(editor,"lati1",lat1);
                         editor.commit();
                             t7.setText("Address of User: "+address);
-                            t7.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    String geoUri = "http://maps.google.com/maps?q=loc:" + lat1 + "," + lon1;
 
-                                    String uri = String.format(Locale.ENGLISH, geoUri, lat1, lon1);
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                                    startActivity(intent);
-                                }
-                            });
 
                     }
 
@@ -170,7 +258,7 @@ if(!mpost_key.isEmpty())
 
 
             } else {
-                Toast.makeText(ViewProduct.this, "Product doesn't exists...", Toast.LENGTH_SHORT).show();
+
             }
         progressBar.setVisibility(View.INVISIBLE);
         }
@@ -186,6 +274,8 @@ else
 {
     Toast.makeText(this, "Product id not found", Toast.LENGTH_SHORT).show();
 }
+
+
         String current=mauth.getCurrentUser().getUid();
 
         databaseReference2.child(current).addValueEventListener(new ValueEventListener() {
@@ -218,18 +308,24 @@ else
             }
         });
 
-    floatingActionButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent=new Intent(ViewProduct.this,ChatActivity.class);
-            intent.putExtra("blogs",mpost_key);
-            intent.putExtra("uids",name);
 
-            startActivity(intent);
-        }
-    });
+        t7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                                    String geoUri = "http://maps.google.com/maps?q=loc:" + lat1 + "," + lon1;
+//
+//                                    String uri = String.format(Locale.ENGLISH, geoUri, lat1, lon1);
+                Intent intent = new Intent(ViewProduct.this,Checkiit.class);
+                intent.putExtra("lon1",lon1);
+                intent.putExtra("lon2",lon2);
+                intent.putExtra("lat1",lat1);
+                intent.putExtra("lat2",lat2);
+
+                startActivity(intent);
+            }
+        });
     }
-   
+
     SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
         return edit.putLong(key, Double.doubleToRawLongBits(value));
     }

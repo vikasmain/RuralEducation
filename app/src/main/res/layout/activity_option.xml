@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.foodprotect.view.PostThirdActivity"
+    tools:showIn="@layout/activity_post_third">
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:textColor="@android:color/holo_orange_light"
+        android:id="@+id/t1"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textSize="19sp"
+        android:gravity="center"
+        android:textColor="@android:color/holo_red_dark"
+        android:id="@+id/t2"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="17sp"
+        android:layout_margin="5dp"
+        android:gravity="center"
+
+        android:textColor="@android:color/holo_blue_light"
+        android:layout_height="wrap_content"
+        android:id="@+id/t3"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="17sp"
+        android:layout_margin="5dp"
+        android:gravity="center"
+
+        android:textColor="@android:color/holo_blue_light"
+        android:layout_height="wrap_content"
+        android:id="@+id/t4"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@android:color/holo_blue_light"></View>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/r1">
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:src="@drawable/choose"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Click here for images"
+            android:textColor="@android:color/darker_gray"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+
+        android:textColor="@android:color/white"
+        android:background="@android:color/holo_blue_light"
+        android:id="@+id/sa"/>
+</LinearLayout>
+</android.support.constraint.ConstraintLayout>

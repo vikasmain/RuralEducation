@@ -8,6 +8,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -19,9 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.SpannableString;
-import android.text.TextWatcher;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,14 +45,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+/**
+ * Created by dell on 09-01-2018.
+ */
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     public String value,gen;
     RecyclerView re;
 
+    EditText e;
     String first_name,last_name,imagetake,dateofjoin;
     FirebaseAuth mFirebaseAuth;
     private StaggeredGridLayoutManager mLayoutManager;
@@ -70,7 +74,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     //search adapter functionality
     FirebaseRecyclerAdapter<product,BlogViewholder> searchadapter;
     List<String> suggestion=new ArrayList<>();
-    MaterialSearchBar materialSearchBar;
     Toolbar toolbar;
     static String Extra="blog_id";
     @Override
@@ -80,12 +83,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         setContentView(R.layout.loginsignup);
-
+        e=(EditText)findViewById(R.id.searchBar);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
         displayuserprofile=(ImageView)hView.findViewById(R.id.displayuser);
         flst=(TextView)hView.findViewById(R.id.flastname);
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -93,6 +95,16 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         toolbar.setBackgroundColor(getResources().getColor(R.color.white));
         mFirebaseAuth = FirebaseAuth.getInstance();
 
+        e.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String searchText = e.getText().toString();
+
+                firebaseUserSearch(searchText);
+
+            }
+        });
         mauthstatelistener=new FirebaseAuth.AuthStateListener() {//this is for checking whether user is logged in or not.
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -154,6 +166,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                                 break;
                             case R.id.action_item2:
                                 Intent intent=new Intent(MainActivity.this,PostFirstActivity.class);
+
                                 startActivity(intent);
                                 break;
                             case R.id.action_item3:
@@ -188,8 +201,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 }
             });
         }
-        materialSearchBar=(MaterialSearchBar)findViewById(R.id.searchBar);
-        materialSearchBar.setHint("Enter Category...");
+
         re=(RecyclerView)findViewById(R.id.my_recycler_view);
         if (re != null) {
             //to enable optimization of recyclerview
@@ -211,7 +223,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 final String nakoli_key = post_ref.getKey();
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setcategory(model.getCategory());
-
+                viewHolder.setstatus(model.getStatus());
                 viewHolder.setPri(getResources().getString(R.string.Rs) + " " + model.getPrice());
                 viewHolder.setImage(getApplicationContext(), model.getImage());
 
@@ -251,52 +263,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
-        loadsuggestion();
-        materialSearchBar.setLastSuggestions(suggestion);
-        materialSearchBar.setCardViewElevation(10);
-        materialSearchBar.addTextChangeListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                List<String> sugges=new ArrayList<>();
-                for(String search:suggestion)
-                {
-                    if(search.toLowerCase().contains(materialSearchBar.getText().toLowerCase()))
-                    {
-                        sugges.add(search);
-                    }
 
-                }
-                materialSearchBar.setLastSuggestions(sugges);
 
-            }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
-                                                        @Override
-                                                        public void onSearchStateChanged(boolean enabled) {
-                                                            if(!enabled)
-                                                                re.setAdapter(firebaseRecyclerAdapter);
-                                                        }
-
-                                                        @Override
-                                                        public void onSearchConfirmed(CharSequence text) {
-                                                               startSearch(text);
-                                                        }
-
-                                                        @Override
-                                                        public void onButtonClicked(int buttonCode) {
-
-                                                        }
-                                                    });
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -309,24 +278,31 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         //Used to select an item programmatically
         //bottomNavigationView.getMenu().getItem(2).setChecked(true);
     }
+    private void firebaseUserSearch(String searchText) {
 
-    private void startSearch(CharSequence text) {
-        searchadapter=new FirebaseRecyclerAdapter<product, BlogViewholder>(
+        Toast.makeText(MainActivity.this, "Search by name", Toast.LENGTH_LONG).show();
+
+        Query firebaseSearchQuery = products.orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
+
+        FirebaseRecyclerAdapter<product, BlogViewholder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<product, BlogViewholder>(
+
                 product.class,
                 R.layout.model_post,
                 BlogViewholder.class,
-                products.orderByChild("category").equalTo(text.toString())
+                firebaseSearchQuery
 
         ) {
             @Override
-            protected void populateViewHolder(BlogViewholder viewHolder, product model, final int position) {
+            protected void populateViewHolder(BlogViewholder viewHolder, product model, int position) {
+
+
                 final String post_key = getRef(position).getKey();
                 //for retrieving each post key getRef() method is used for this.
                 final DatabaseReference post_ref = getRef(position);
                 final String nakoli_key = post_ref.getKey();
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setcategory(model.getCategory());
-
+                viewHolder.setstatus(model.getStatus());
                 viewHolder.setPri(getResources().getString(R.string.Rs) + " " + model.getPrice());
                 viewHolder.setImage(getApplicationContext(), model.getImage());
 
@@ -338,34 +314,22 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     @Override
                     public void onClick(View v) {
                         Intent newIntent = new Intent(MainActivity.this, ViewProduct.class);
-                        newIntent.putExtra(MainActivity.Extra, searchadapter.getRef(position).getKey());
+                        newIntent.putExtra(MainActivity.Extra, nakoli_key);
                         startActivity(newIntent);
                     }
                 });
 
             }
         };
-re.setAdapter(searchadapter);
-    }
 
-    private void loadsuggestion() {
-        products.orderByChild("category").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-               for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
-               {
-                   product product=dataSnapshot1.getValue(product.class);
-                   suggestion.add(product.getCategory());
-               }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        re.setAdapter(firebaseRecyclerAdapter);
 
     }
+
+    boolean doubleBackToExitPressedOnce = false;
+
+
+
 //    @Override
 //    public boolean onQueryTextSubmit(String query) {
 //        return false;
@@ -491,9 +455,25 @@ re.setAdapter(searchadapter);
 
 
         }
-        public void setPri(String price) {
+        public void setPri(String price)
+        {
             final TextView textView2 = (TextView) vi.findViewById(R.id.textView2);
             textView2.setText(price);
+
+        }
+        public void setstatus(String status)
+        {
+
+            final TextView textView2 = (TextView) vi.findViewById(R.id.textView4);
+            if(!TextUtils.isEmpty(status))
+            {
+                if(status.equals("A"))
+                    textView2.setText("Sold");
+                else if(status.equals("n"))
+                    textView2.setText("Available");
+            }
+
+
 
         }
         public void setDetails(String tit,String price,Context context,String img) {
@@ -556,9 +536,26 @@ re.setAdapter(searchadapter);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
+        else if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast toast=Toast.makeText(this, "Press Back again to exit", Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        view.setBackgroundColor(getResources().getColor(R.color.toast));
+        TextView text = (TextView) view.findViewById(android.R.id.message);
+        text.setTextColor(getResources().getColor(R.color.black));
+/*Here you can do anything with above textview like text.setTextColor(Color.parseColor("#000000"));*/
+        toast.show();
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
     private void checkuserexists() {
         if(mFirebaseAuth.getCurrentUser() !=null) {

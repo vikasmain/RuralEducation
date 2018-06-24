@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    tools:context="com.foodprotect.view.FinalCheckout">
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/text1"
+    android:text="Complete Your Payment By clicking Payment Button.This payment is using paytm payment gateway."
+    android:gravity="center"
+    android:textStyle="italic|bold"
+    android:textColor="@color/colorPrimaryDark"
+    android:textSize="16sp"/>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pay Online"
+        android:textColor="@android:color/white"
+        android:id="@+id/op"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_selected_button"/>
+</RelativeLayout>
