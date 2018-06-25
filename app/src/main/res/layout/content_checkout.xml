@@ -75,6 +75,17 @@
             android:layout_marginTop="20dp"
             android:textColor="@android:color/white"
             android:textAllCaps="false"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:indeterminate="true"
+            android:max="100"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:paddingTop="50dp"
+            android:layout_below="@+id/button1"
+            android:indeterminateTint="@android:color/holo_red_dark"/>
 
         <Button
             android:layout_width="match_parent"

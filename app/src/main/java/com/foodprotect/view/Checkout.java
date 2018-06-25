@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +35,13 @@ public class Checkout extends Activity
             ,textView3;
     Button button;
     String name;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkout);
+
         textView=(TextView)findViewById(R.id.e2);
         textView2=(TextView)findViewById(R.id.e3);
         textView3=(TextView)findViewById(R.id.button1);
@@ -81,8 +84,11 @@ public class Checkout extends Activity
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(name!= null && !TextUtils.isEmpty(name)&&!name.equals("null"))
+                if(name!= null && !TextUtils.isEmpty(name)&&!name.equals("null")) {
+
+
                     new SigninActivity(Checkout.this).execute(name);
+                }
                 else
                     Toast.makeText(Checkout.this, "Please Enter Village name", Toast.LENGTH_SHORT).show();
             }
@@ -99,7 +105,12 @@ private class SigninActivity  extends AsyncTask<String,Void,String> {
         this.context = context;
     }
 
+    @Override
     protected void onPreExecute() {
+        //textView.setText("Hello !!!");
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        super.onPreExecute();
     }
 
     @Override
@@ -107,13 +118,12 @@ private class SigninActivity  extends AsyncTask<String,Void,String> {
         String name = params[0];
         String result;
         String inputLine;
-
+        String link = "https://vikasbajpayee.000webhostapp.com/villagesapi.php?name=" + name;
+        //put this link outside try block otherwise it will not work.
         try {
-            Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
-            String link = "https://vikasbajpayee.000webhostapp.com/villagesapi.php?name=" + name;
             URL myUrl = new URL(link);
             //Create a connection
-            HttpURLConnection connection = (HttpURLConnection)
+            HttpURLConnection connection =(HttpURLConnection)
                     myUrl.openConnection();
             //Set methods and timeouts
             connection.setRequestMethod(REQUEST_METHOD);
@@ -129,7 +139,7 @@ private class SigninActivity  extends AsyncTask<String,Void,String> {
             BufferedReader reader = new BufferedReader(streamReader);
             StringBuilder stringBuilder = new StringBuilder();
             //Check if the line we are reading is not null
-            while ((inputLine = reader.readLine()) != null) {
+            while((inputLine = reader.readLine()) != null){
                 stringBuilder.append(inputLine);
             }
             //Close our InputStream and Buffered reader
@@ -137,55 +147,35 @@ private class SigninActivity  extends AsyncTask<String,Void,String> {
             streamReader.close();
             //Set our result equal to our stringBuilder
             result = stringBuilder.toString();
+
+
+            Log.d(result,"result");
         }catch(Exception e){
                  Log.d("hello","hlo");
                 return "error";
             }
         return result;
-//        URL url = new URL(link);
-//                HttpClient client = new DefaultHttpClient();
-//                HttpGet request = new HttpGet();
-//                request.setURI(new URI(link));
-//                HttpResponse response = client.execute(request);
-//                BufferedReader in = new BufferedReader(new
-//                        InputStreamReader(response.getEntity().getContent()));
-//
-//                StringBuffer sb = new StringBuffer("");
-//                String line="";
-//
-//                while ((line = in.readLine()) != null)
-//                {
-//                    sb.append(line);
-//                    break;
-//                }
-//                in.close();
-//                return sb.toString();
-//            } catch(Exception e){
-//                 Log.d("hello","hlo");
-//                return error;
-//            }
 
     }
 
     @Override
     protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        progressBar.setVisibility(View.GONE);
+
         if (!TextUtils.isEmpty(result)&&!result.equals("null")) {
 
 
-            if (result.equals("Exc")) {
-                Toast.makeText(context, "Village doesn't exists", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            if (result.equals(name)) {
                 Intent intent = new Intent(Checkout.this, FinalCheckout.class);
                 intent.putExtra("namedata", name);
-                startActivity(intent);
+                startActivity(intent);            }
+            else {
 
+                Toast.makeText(context, "Village doesn't exists", Toast.LENGTH_SHORT).show();
             }
         }
-        else
-        {
-            Toast.makeText(context, "Network Error!!", Toast.LENGTH_SHORT).show();
-        }
+
     }
 }
 }
