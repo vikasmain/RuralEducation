@@ -48,7 +48,7 @@ public class SetupAccount extends AppCompatActivity  {
     private ArrayList<String> permissionsRejected = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
     double longitude,latitude;
-   LocationTrack locationTrack;
+    LocationTrack locationTrack;
     final CharSequence[] items = {" Male ", " Female "};
 
     @Override
